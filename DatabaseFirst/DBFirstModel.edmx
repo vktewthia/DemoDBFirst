@@ -1,0 +1,944 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="RentoPropManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Contracts">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ContractType" Type="int" Nullable="false" />
+          <Property Name="BookedDate" Type="datetime" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDateApprox" Type="datetime" />
+          <Property Name="Duration" Type="int" Nullable="false" />
+          <Property Name="RentFixedPerMonth" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SecurityAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SecurityAmountDeposit" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsSecurityPaid" Type="bit" Nullable="false" />
+          <Property Name="SecurityMonths" Type="int" Nullable="false" />
+          <Property Name="ElectricityUnitRate" Type="int" Nullable="false" />
+          <Property Name="ElectricityUnitStart" Type="int" Nullable="false" />
+          <Property Name="MaintenanceCharge" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="WiFiCharge" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsWifiOpted" Type="bit" Nullable="false" />
+          <Property Name="RoCharge" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="OtherCharge" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsOnNotice" Type="bit" Nullable="false" />
+          <Property Name="TerminateDate" Type="datetime" />
+          <Property Name="IsTerminated" Type="bit" Nullable="false" />
+          <Property Name="IsSecurityAmountReturned" Type="bit" Nullable="false" />
+          <Property Name="TenantKey" Type="int" Nullable="false" />
+          <Property Name="RentalPropertyKey" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ElectricityMeterMaster">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MeterNo" Type="int" Nullable="false" />
+          <Property Name="MeterReadingStart" Type="int" Nullable="false" />
+          <Property Name="OldMeterParentKey" Type="int" />
+          <Property Name="InstallationDate" Type="datetime" Nullable="false" />
+          <Property Name="DeactivationDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ElectricityUnitReadings">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MeterKey" Type="int" Nullable="false" />
+          <Property Name="ReadingForMonth" Type="datetime" Nullable="false" />
+          <Property Name="CurrentReadingDate" Type="datetime" Nullable="false" />
+          <Property Name="LastReadingDate" Type="datetime" />
+          <Property Name="CurrentReadingUnits" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Property">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PropertyType" Type="int" Nullable="false" />
+          <Property Name="PropertyNo" Type="int" Nullable="false" />
+          <Property Name="PropertyCaption" Type="nvarchar(max)" />
+          <Property Name="PropertyId" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PropertyMeterMapping">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MainPropertyKey" Type="int" Nullable="false" />
+          <Property Name="MeterKeyKey" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RentalProperty">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PropertyType" Type="int" Nullable="false" />
+          <Property Name="PropertyNo" Type="int" Nullable="false" />
+          <Property Name="Caption" Type="nvarchar(max)" />
+          <Property Name="CaptionId" Type="nvarchar(max)" />
+          <Property Name="BaseRentAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsBooked" Type="bit" Nullable="false" />
+          <Property Name="IsVacant" Type="bit" Nullable="false" />
+          <Property Name="IsAvailable" Type="bit" Nullable="false" />
+          <Property Name="IsNotice" Type="bit" Nullable="false" />
+          <Property Name="NoticeDate" Type="datetime" />
+          <Property Name="AvailableFrom" Type="datetime" />
+          <Property Name="MeterKey" Type="int" Nullable="false" />
+          <Property Name="ParentPropertyKey" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RentReceipts">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ContractKey" Type="int" Nullable="false" />
+          <Property Name="PreviousReceiptKey" Type="int" Nullable="false" />
+          <Property Name="MeterReadingKey" Type="int" Nullable="false" />
+          <Property Name="PaymentType" Type="int" Nullable="false" />
+          <Property Name="PaymentMode" Type="int" Nullable="false" />
+          <Property Name="DueAmt" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ReceivedAmt" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ForMonth" Type="datetime" Nullable="false" />
+          <Property Name="ElectricityUnitRate" Type="int" Nullable="false" />
+          <Property Name="ElectricityUnitFrom" Type="int" Nullable="false" />
+          <Property Name="ElectricityUnitTo" Type="int" Nullable="false" />
+          <Property Name="MaintenanceCharge" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="WiFiCharge" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsWifiOpted" Type="bit" Nullable="false" />
+          <Property Name="RoCharge" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="OtherCharge" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="LastMonthBalance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="LastMonthAdvance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ReceivedDate" Type="datetime" Nullable="false" />
+          <Property Name="ReceivedBy" Type="nvarchar(max)" />
+          <Property Name="IsValid" Type="bit" Nullable="false" />
+          <Property Name="IsPaymentClear" Type="bit" Nullable="false" />
+          <Property Name="IsCanceled" Type="bit" Nullable="false" />
+          <Property Name="IsCarryForward" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TenantInfo">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar(max)" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="MiddleName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="MobileNo1" Type="nvarchar(max)" />
+          <Property Name="MobileNo2" Type="nvarchar(max)" />
+          <Property Name="TempAddress" Type="nvarchar(max)" />
+          <Property Name="PermAddress" Type="nvarchar(max)" />
+          <Property Name="HomeTelNo1" Type="nvarchar(max)" />
+          <Property Name="HomeTelNo2" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="DeactivationDate" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_dbo_Contracts_dbo_RentalProperty_RentalPropertyKey">
+          <End Role="RentalProperty" Type="Self.RentalProperty" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Contracts" Type="Self.Contracts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RentalProperty">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="Contracts">
+              <PropertyRef Name="RentalPropertyKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Contracts_dbo_TenantInfo_TenantKey">
+          <End Role="TenantInfo" Type="Self.TenantInfo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Contracts" Type="Self.Contracts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TenantInfo">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="Contracts">
+              <PropertyRef Name="TenantKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ElectricityUnitReadings_dbo_ElectricityMeterMaster_MeterKey">
+          <End Role="ElectricityMeterMaster" Type="Self.ElectricityMeterMaster" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ElectricityUnitReadings" Type="Self.ElectricityUnitReadings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElectricityMeterMaster">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="ElectricityUnitReadings">
+              <PropertyRef Name="MeterKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PropertyMeterMapping_dbo_ElectricityMeterMaster_MeterKeyKey">
+          <End Role="ElectricityMeterMaster" Type="Self.ElectricityMeterMaster" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PropertyMeterMapping" Type="Self.PropertyMeterMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElectricityMeterMaster">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="PropertyMeterMapping">
+              <PropertyRef Name="MeterKeyKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PropertyMeterMapping_dbo_Property_MainPropertyKey">
+          <End Role="Property" Type="Self.Property" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PropertyMeterMapping" Type="Self.PropertyMeterMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="PropertyMeterMapping">
+              <PropertyRef Name="MainPropertyKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_RentalProperty_dbo_ElectricityMeterMaster_MeterKey">
+          <End Role="ElectricityMeterMaster" Type="Self.ElectricityMeterMaster" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RentalProperty" Type="Self.RentalProperty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElectricityMeterMaster">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="RentalProperty">
+              <PropertyRef Name="MeterKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_RentalProperty_dbo_Property_ParentPropertyKey">
+          <End Role="Property" Type="Self.Property" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RentalProperty" Type="Self.RentalProperty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="RentalProperty">
+              <PropertyRef Name="ParentPropertyKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_RentReceipts_dbo_Contracts_ContractKey">
+          <End Role="Contracts" Type="Self.Contracts" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RentReceipts" Type="Self.RentReceipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contracts">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="RentReceipts">
+              <PropertyRef Name="ContractKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="RentoPropManagementModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contracts" EntityType="Self.Contracts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ElectricityMeterMaster" EntityType="Self.ElectricityMeterMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ElectricityUnitReadings" EntityType="Self.ElectricityUnitReadings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Property" EntityType="Self.Property" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PropertyMeterMapping" EntityType="Self.PropertyMeterMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RentalProperty" EntityType="Self.RentalProperty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RentReceipts" EntityType="Self.RentReceipts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TenantInfo" EntityType="Self.TenantInfo" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Contracts_dbo_RentalProperty_RentalPropertyKey" Association="Self.FK_dbo_Contracts_dbo_RentalProperty_RentalPropertyKey">
+            <End Role="RentalProperty" EntitySet="RentalProperty" />
+            <End Role="Contracts" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Contracts_dbo_TenantInfo_TenantKey" Association="Self.FK_dbo_Contracts_dbo_TenantInfo_TenantKey">
+            <End Role="TenantInfo" EntitySet="TenantInfo" />
+            <End Role="Contracts" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ElectricityUnitReadings_dbo_ElectricityMeterMaster_MeterKey" Association="Self.FK_dbo_ElectricityUnitReadings_dbo_ElectricityMeterMaster_MeterKey">
+            <End Role="ElectricityMeterMaster" EntitySet="ElectricityMeterMaster" />
+            <End Role="ElectricityUnitReadings" EntitySet="ElectricityUnitReadings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PropertyMeterMapping_dbo_ElectricityMeterMaster_MeterKeyKey" Association="Self.FK_dbo_PropertyMeterMapping_dbo_ElectricityMeterMaster_MeterKeyKey">
+            <End Role="ElectricityMeterMaster" EntitySet="ElectricityMeterMaster" />
+            <End Role="PropertyMeterMapping" EntitySet="PropertyMeterMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PropertyMeterMapping_dbo_Property_MainPropertyKey" Association="Self.FK_dbo_PropertyMeterMapping_dbo_Property_MainPropertyKey">
+            <End Role="Property" EntitySet="Property" />
+            <End Role="PropertyMeterMapping" EntitySet="PropertyMeterMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_RentalProperty_dbo_ElectricityMeterMaster_MeterKey" Association="Self.FK_dbo_RentalProperty_dbo_ElectricityMeterMaster_MeterKey">
+            <End Role="ElectricityMeterMaster" EntitySet="ElectricityMeterMaster" />
+            <End Role="RentalProperty" EntitySet="RentalProperty" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_RentalProperty_dbo_Property_ParentPropertyKey" Association="Self.FK_dbo_RentalProperty_dbo_Property_ParentPropertyKey">
+            <End Role="Property" EntitySet="Property" />
+            <End Role="RentalProperty" EntitySet="RentalProperty" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_RentReceipts_dbo_Contracts_ContractKey" Association="Self.FK_dbo_RentReceipts_dbo_Contracts_ContractKey">
+            <End Role="Contracts" EntitySet="Contracts" />
+            <End Role="RentReceipts" EntitySet="RentReceipts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RentoPropManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+          </Key>
+          <Property Name="MigrationId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Contract">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContractType" Type="Int32" Nullable="false" />
+          <Property Name="BookedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDateApprox" Type="DateTime" Precision="3" />
+          <Property Name="Duration" Type="Int32" Nullable="false" />
+          <Property Name="RentFixedPerMonth" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SecurityAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SecurityAmountDeposit" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsSecurityPaid" Type="Boolean" Nullable="false" />
+          <Property Name="SecurityMonths" Type="Int32" Nullable="false" />
+          <Property Name="ElectricityUnitRate" Type="Int32" Nullable="false" />
+          <Property Name="ElectricityUnitStart" Type="Int32" Nullable="false" />
+          <Property Name="MaintenanceCharge" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="WiFiCharge" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsWifiOpted" Type="Boolean" Nullable="false" />
+          <Property Name="RoCharge" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="OtherCharge" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsOnNotice" Type="Boolean" Nullable="false" />
+          <Property Name="TerminateDate" Type="DateTime" Precision="3" />
+          <Property Name="IsTerminated" Type="Boolean" Nullable="false" />
+          <Property Name="IsSecurityAmountReturned" Type="Boolean" Nullable="false" />
+          <Property Name="TenantKey" Type="Int32" Nullable="false" />
+          <Property Name="RentalPropertyKey" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RentalProperty" Relationship="Self.FK_dbo_Contracts_dbo_RentalProperty_RentalPropertyKey" FromRole="Contracts" ToRole="RentalProperty" />
+          <NavigationProperty Name="TenantInfo" Relationship="Self.FK_dbo_Contracts_dbo_TenantInfo_TenantKey" FromRole="Contracts" ToRole="TenantInfo" />
+          <NavigationProperty Name="RentReceipts" Relationship="Self.FK_dbo_RentReceipts_dbo_Contracts_ContractKey" FromRole="Contracts" ToRole="RentReceipts" />
+        </EntityType>
+        <EntityType Name="ElectricityMeterMaster">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MeterNo" Type="Int32" Nullable="false" />
+          <Property Name="MeterReadingStart" Type="Int32" Nullable="false" />
+          <Property Name="OldMeterParentKey" Type="Int32" />
+          <Property Name="InstallationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DeactivationDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ElectricityUnitReadings" Relationship="Self.FK_dbo_ElectricityUnitReadings_dbo_ElectricityMeterMaster_MeterKey" FromRole="ElectricityMeterMaster" ToRole="ElectricityUnitReadings" />
+          <NavigationProperty Name="PropertyMeterMappings" Relationship="Self.FK_dbo_PropertyMeterMapping_dbo_ElectricityMeterMaster_MeterKeyKey" FromRole="ElectricityMeterMaster" ToRole="PropertyMeterMapping" />
+          <NavigationProperty Name="RentalProperties" Relationship="Self.FK_dbo_RentalProperty_dbo_ElectricityMeterMaster_MeterKey" FromRole="ElectricityMeterMaster" ToRole="RentalProperty" />
+        </EntityType>
+        <EntityType Name="ElectricityUnitReading">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MeterKey" Type="Int32" Nullable="false" />
+          <Property Name="ReadingForMonth" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CurrentReadingDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastReadingDate" Type="DateTime" Precision="3" />
+          <Property Name="CurrentReadingUnits" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ElectricityMeterMaster" Relationship="Self.FK_dbo_ElectricityUnitReadings_dbo_ElectricityMeterMaster_MeterKey" FromRole="ElectricityUnitReadings" ToRole="ElectricityMeterMaster" />
+        </EntityType>
+        <EntityType Name="Property">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PropertyType" Type="Int32" Nullable="false" />
+          <Property Name="PropertyNo" Type="Int32" Nullable="false" />
+          <Property Name="PropertyCaption" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PropertyId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PropertyMeterMappings" Relationship="Self.FK_dbo_PropertyMeterMapping_dbo_Property_MainPropertyKey" FromRole="Property" ToRole="PropertyMeterMapping" />
+          <NavigationProperty Name="RentalProperties" Relationship="Self.FK_dbo_RentalProperty_dbo_Property_ParentPropertyKey" FromRole="Property" ToRole="RentalProperty" />
+        </EntityType>
+        <EntityType Name="PropertyMeterMapping">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MainPropertyKey" Type="Int32" Nullable="false" />
+          <Property Name="MeterKeyKey" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ElectricityMeterMaster" Relationship="Self.FK_dbo_PropertyMeterMapping_dbo_ElectricityMeterMaster_MeterKeyKey" FromRole="PropertyMeterMapping" ToRole="ElectricityMeterMaster" />
+          <NavigationProperty Name="Property" Relationship="Self.FK_dbo_PropertyMeterMapping_dbo_Property_MainPropertyKey" FromRole="PropertyMeterMapping" ToRole="Property" />
+        </EntityType>
+        <EntityType Name="RentalProperty">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PropertyType" Type="Int32" Nullable="false" />
+          <Property Name="PropertyNo" Type="Int32" Nullable="false" />
+          <Property Name="Caption" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CaptionId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BaseRentAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsBooked" Type="Boolean" Nullable="false" />
+          <Property Name="IsVacant" Type="Boolean" Nullable="false" />
+          <Property Name="IsAvailable" Type="Boolean" Nullable="false" />
+          <Property Name="IsNotice" Type="Boolean" Nullable="false" />
+          <Property Name="NoticeDate" Type="DateTime" Precision="3" />
+          <Property Name="AvailableFrom" Type="DateTime" Precision="3" />
+          <Property Name="MeterKey" Type="Int32" Nullable="false" />
+          <Property Name="ParentPropertyKey" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Contracts" Relationship="Self.FK_dbo_Contracts_dbo_RentalProperty_RentalPropertyKey" FromRole="RentalProperty" ToRole="Contracts" />
+          <NavigationProperty Name="ElectricityMeterMaster" Relationship="Self.FK_dbo_RentalProperty_dbo_ElectricityMeterMaster_MeterKey" FromRole="RentalProperty" ToRole="ElectricityMeterMaster" />
+          <NavigationProperty Name="Property" Relationship="Self.FK_dbo_RentalProperty_dbo_Property_ParentPropertyKey" FromRole="RentalProperty" ToRole="Property" />
+        </EntityType>
+        <EntityType Name="RentReceipt">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContractKey" Type="Int32" Nullable="false" />
+          <Property Name="PreviousReceiptKey" Type="Int32" Nullable="false" />
+          <Property Name="MeterReadingKey" Type="Int32" Nullable="false" />
+          <Property Name="PaymentType" Type="Int32" Nullable="false" />
+          <Property Name="PaymentMode" Type="Int32" Nullable="false" />
+          <Property Name="DueAmt" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ReceivedAmt" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ForMonth" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ElectricityUnitRate" Type="Int32" Nullable="false" />
+          <Property Name="ElectricityUnitFrom" Type="Int32" Nullable="false" />
+          <Property Name="ElectricityUnitTo" Type="Int32" Nullable="false" />
+          <Property Name="MaintenanceCharge" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="WiFiCharge" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsWifiOpted" Type="Boolean" Nullable="false" />
+          <Property Name="RoCharge" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="OtherCharge" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="LastMonthBalance" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="LastMonthAdvance" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ReceivedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReceivedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsValid" Type="Boolean" Nullable="false" />
+          <Property Name="IsPaymentClear" Type="Boolean" Nullable="false" />
+          <Property Name="IsCanceled" Type="Boolean" Nullable="false" />
+          <Property Name="IsCarryForward" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Contract" Relationship="Self.FK_dbo_RentReceipts_dbo_Contracts_ContractKey" FromRole="RentReceipts" ToRole="Contracts" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TenantInfo">
+          <Key>
+            <PropertyRef Name="Key" />
+          </Key>
+          <Property Name="Key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNo1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNo2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TempAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PermAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HomeTelNo1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HomeTelNo2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="DeactivationDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Contracts" Relationship="Self.FK_dbo_Contracts_dbo_TenantInfo_TenantKey" FromRole="TenantInfo" ToRole="Contracts" />
+        </EntityType>
+        <Association Name="FK_dbo_Contracts_dbo_RentalProperty_RentalPropertyKey">
+          <End Role="RentalProperty" Type="Self.RentalProperty" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Contracts" Type="Self.Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RentalProperty">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="Contracts">
+              <PropertyRef Name="RentalPropertyKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Contracts_dbo_TenantInfo_TenantKey">
+          <End Role="TenantInfo" Type="Self.TenantInfo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Contracts" Type="Self.Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TenantInfo">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="Contracts">
+              <PropertyRef Name="TenantKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_RentReceipts_dbo_Contracts_ContractKey">
+          <End Role="Contracts" Type="Self.Contract" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RentReceipts" Type="Self.RentReceipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contracts">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="RentReceipts">
+              <PropertyRef Name="ContractKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ElectricityUnitReadings_dbo_ElectricityMeterMaster_MeterKey">
+          <End Role="ElectricityMeterMaster" Type="Self.ElectricityMeterMaster" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ElectricityUnitReadings" Type="Self.ElectricityUnitReading" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElectricityMeterMaster">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="ElectricityUnitReadings">
+              <PropertyRef Name="MeterKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PropertyMeterMapping_dbo_ElectricityMeterMaster_MeterKeyKey">
+          <End Role="ElectricityMeterMaster" Type="Self.ElectricityMeterMaster" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PropertyMeterMapping" Type="Self.PropertyMeterMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElectricityMeterMaster">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="PropertyMeterMapping">
+              <PropertyRef Name="MeterKeyKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_RentalProperty_dbo_ElectricityMeterMaster_MeterKey">
+          <End Role="ElectricityMeterMaster" Type="Self.ElectricityMeterMaster" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RentalProperty" Type="Self.RentalProperty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElectricityMeterMaster">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="RentalProperty">
+              <PropertyRef Name="MeterKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PropertyMeterMapping_dbo_Property_MainPropertyKey">
+          <End Role="Property" Type="Self.Property" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PropertyMeterMapping" Type="Self.PropertyMeterMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="PropertyMeterMapping">
+              <PropertyRef Name="MainPropertyKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_RentalProperty_dbo_Property_ParentPropertyKey">
+          <End Role="Property" Type="Self.Property" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RentalProperty" Type="Self.RentalProperty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Property">
+              <PropertyRef Name="Key" />
+            </Principal>
+            <Dependent Role="RentalProperty">
+              <PropertyRef Name="ParentPropertyKey" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RentoPropManagementEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+          <EntitySet Name="Contracts" EntityType="Self.Contract" />
+          <EntitySet Name="ElectricityMeterMasters" EntityType="Self.ElectricityMeterMaster" />
+          <EntitySet Name="ElectricityUnitReadings" EntityType="Self.ElectricityUnitReading" />
+          <EntitySet Name="Properties" EntityType="Self.Property" />
+          <EntitySet Name="PropertyMeterMappings" EntityType="Self.PropertyMeterMapping" />
+          <EntitySet Name="RentalProperties" EntityType="Self.RentalProperty" />
+          <EntitySet Name="RentReceipts" EntityType="Self.RentReceipt" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TenantInfoes" EntityType="Self.TenantInfo" />
+          <AssociationSet Name="FK_dbo_Contracts_dbo_RentalProperty_RentalPropertyKey" Association="Self.FK_dbo_Contracts_dbo_RentalProperty_RentalPropertyKey">
+            <End Role="RentalProperty" EntitySet="RentalProperties" />
+            <End Role="Contracts" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Contracts_dbo_TenantInfo_TenantKey" Association="Self.FK_dbo_Contracts_dbo_TenantInfo_TenantKey">
+            <End Role="TenantInfo" EntitySet="TenantInfoes" />
+            <End Role="Contracts" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_RentReceipts_dbo_Contracts_ContractKey" Association="Self.FK_dbo_RentReceipts_dbo_Contracts_ContractKey">
+            <End Role="Contracts" EntitySet="Contracts" />
+            <End Role="RentReceipts" EntitySet="RentReceipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ElectricityUnitReadings_dbo_ElectricityMeterMaster_MeterKey" Association="Self.FK_dbo_ElectricityUnitReadings_dbo_ElectricityMeterMaster_MeterKey">
+            <End Role="ElectricityMeterMaster" EntitySet="ElectricityMeterMasters" />
+            <End Role="ElectricityUnitReadings" EntitySet="ElectricityUnitReadings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PropertyMeterMapping_dbo_ElectricityMeterMaster_MeterKeyKey" Association="Self.FK_dbo_PropertyMeterMapping_dbo_ElectricityMeterMaster_MeterKeyKey">
+            <End Role="ElectricityMeterMaster" EntitySet="ElectricityMeterMasters" />
+            <End Role="PropertyMeterMapping" EntitySet="PropertyMeterMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_RentalProperty_dbo_ElectricityMeterMaster_MeterKey" Association="Self.FK_dbo_RentalProperty_dbo_ElectricityMeterMaster_MeterKey">
+            <End Role="ElectricityMeterMaster" EntitySet="ElectricityMeterMasters" />
+            <End Role="RentalProperty" EntitySet="RentalProperties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PropertyMeterMapping_dbo_Property_MainPropertyKey" Association="Self.FK_dbo_PropertyMeterMapping_dbo_Property_MainPropertyKey">
+            <End Role="Property" EntitySet="Properties" />
+            <End Role="PropertyMeterMapping" EntitySet="PropertyMeterMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_RentalProperty_dbo_Property_ParentPropertyKey" Association="Self.FK_dbo_RentalProperty_dbo_Property_ParentPropertyKey">
+            <End Role="Property" EntitySet="Properties" />
+            <End Role="RentalProperty" EntitySet="RentalProperties" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(RentoPropManagementModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(RentoPropManagementModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RentoPropManagementModelStoreContainer" CdmEntityContainer="RentoPropManagementEntities">
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="RentoPropManagementModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contracts">
+            <EntityTypeMapping TypeName="RentoPropManagementModel.Contract">
+              <MappingFragment StoreEntitySet="Contracts">
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="ContractType" ColumnName="ContractType" />
+                <ScalarProperty Name="BookedDate" ColumnName="BookedDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDateApprox" ColumnName="EndDateApprox" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="RentFixedPerMonth" ColumnName="RentFixedPerMonth" />
+                <ScalarProperty Name="SecurityAmount" ColumnName="SecurityAmount" />
+                <ScalarProperty Name="SecurityAmountDeposit" ColumnName="SecurityAmountDeposit" />
+                <ScalarProperty Name="IsSecurityPaid" ColumnName="IsSecurityPaid" />
+                <ScalarProperty Name="SecurityMonths" ColumnName="SecurityMonths" />
+                <ScalarProperty Name="ElectricityUnitRate" ColumnName="ElectricityUnitRate" />
+                <ScalarProperty Name="ElectricityUnitStart" ColumnName="ElectricityUnitStart" />
+                <ScalarProperty Name="MaintenanceCharge" ColumnName="MaintenanceCharge" />
+                <ScalarProperty Name="WiFiCharge" ColumnName="WiFiCharge" />
+                <ScalarProperty Name="IsWifiOpted" ColumnName="IsWifiOpted" />
+                <ScalarProperty Name="RoCharge" ColumnName="RoCharge" />
+                <ScalarProperty Name="OtherCharge" ColumnName="OtherCharge" />
+                <ScalarProperty Name="IsOnNotice" ColumnName="IsOnNotice" />
+                <ScalarProperty Name="TerminateDate" ColumnName="TerminateDate" />
+                <ScalarProperty Name="IsTerminated" ColumnName="IsTerminated" />
+                <ScalarProperty Name="IsSecurityAmountReturned" ColumnName="IsSecurityAmountReturned" />
+                <ScalarProperty Name="TenantKey" ColumnName="TenantKey" />
+                <ScalarProperty Name="RentalPropertyKey" ColumnName="RentalPropertyKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ElectricityMeterMasters">
+            <EntityTypeMapping TypeName="RentoPropManagementModel.ElectricityMeterMaster">
+              <MappingFragment StoreEntitySet="ElectricityMeterMaster">
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="MeterNo" ColumnName="MeterNo" />
+                <ScalarProperty Name="MeterReadingStart" ColumnName="MeterReadingStart" />
+                <ScalarProperty Name="OldMeterParentKey" ColumnName="OldMeterParentKey" />
+                <ScalarProperty Name="InstallationDate" ColumnName="InstallationDate" />
+                <ScalarProperty Name="DeactivationDate" ColumnName="DeactivationDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ElectricityUnitReadings">
+            <EntityTypeMapping TypeName="RentoPropManagementModel.ElectricityUnitReading">
+              <MappingFragment StoreEntitySet="ElectricityUnitReadings">
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="MeterKey" ColumnName="MeterKey" />
+                <ScalarProperty Name="ReadingForMonth" ColumnName="ReadingForMonth" />
+                <ScalarProperty Name="CurrentReadingDate" ColumnName="CurrentReadingDate" />
+                <ScalarProperty Name="LastReadingDate" ColumnName="LastReadingDate" />
+                <ScalarProperty Name="CurrentReadingUnits" ColumnName="CurrentReadingUnits" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Properties">
+            <EntityTypeMapping TypeName="RentoPropManagementModel.Property">
+              <MappingFragment StoreEntitySet="Property">
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="PropertyType" ColumnName="PropertyType" />
+                <ScalarProperty Name="PropertyNo" ColumnName="PropertyNo" />
+                <ScalarProperty Name="PropertyCaption" ColumnName="PropertyCaption" />
+                <ScalarProperty Name="PropertyId" ColumnName="PropertyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PropertyMeterMappings">
+            <EntityTypeMapping TypeName="RentoPropManagementModel.PropertyMeterMapping">
+              <MappingFragment StoreEntitySet="PropertyMeterMapping">
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="MainPropertyKey" ColumnName="MainPropertyKey" />
+                <ScalarProperty Name="MeterKeyKey" ColumnName="MeterKeyKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RentalProperties">
+            <EntityTypeMapping TypeName="RentoPropManagementModel.RentalProperty">
+              <MappingFragment StoreEntitySet="RentalProperty">
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="PropertyType" ColumnName="PropertyType" />
+                <ScalarProperty Name="PropertyNo" ColumnName="PropertyNo" />
+                <ScalarProperty Name="Caption" ColumnName="Caption" />
+                <ScalarProperty Name="CaptionId" ColumnName="CaptionId" />
+                <ScalarProperty Name="BaseRentAmount" ColumnName="BaseRentAmount" />
+                <ScalarProperty Name="IsBooked" ColumnName="IsBooked" />
+                <ScalarProperty Name="IsVacant" ColumnName="IsVacant" />
+                <ScalarProperty Name="IsAvailable" ColumnName="IsAvailable" />
+                <ScalarProperty Name="IsNotice" ColumnName="IsNotice" />
+                <ScalarProperty Name="NoticeDate" ColumnName="NoticeDate" />
+                <ScalarProperty Name="AvailableFrom" ColumnName="AvailableFrom" />
+                <ScalarProperty Name="MeterKey" ColumnName="MeterKey" />
+                <ScalarProperty Name="ParentPropertyKey" ColumnName="ParentPropertyKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RentReceipts">
+            <EntityTypeMapping TypeName="RentoPropManagementModel.RentReceipt">
+              <MappingFragment StoreEntitySet="RentReceipts">
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="ContractKey" ColumnName="ContractKey" />
+                <ScalarProperty Name="PreviousReceiptKey" ColumnName="PreviousReceiptKey" />
+                <ScalarProperty Name="MeterReadingKey" ColumnName="MeterReadingKey" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+                <ScalarProperty Name="PaymentMode" ColumnName="PaymentMode" />
+                <ScalarProperty Name="DueAmt" ColumnName="DueAmt" />
+                <ScalarProperty Name="ReceivedAmt" ColumnName="ReceivedAmt" />
+                <ScalarProperty Name="ForMonth" ColumnName="ForMonth" />
+                <ScalarProperty Name="ElectricityUnitRate" ColumnName="ElectricityUnitRate" />
+                <ScalarProperty Name="ElectricityUnitFrom" ColumnName="ElectricityUnitFrom" />
+                <ScalarProperty Name="ElectricityUnitTo" ColumnName="ElectricityUnitTo" />
+                <ScalarProperty Name="MaintenanceCharge" ColumnName="MaintenanceCharge" />
+                <ScalarProperty Name="WiFiCharge" ColumnName="WiFiCharge" />
+                <ScalarProperty Name="IsWifiOpted" ColumnName="IsWifiOpted" />
+                <ScalarProperty Name="RoCharge" ColumnName="RoCharge" />
+                <ScalarProperty Name="OtherCharge" ColumnName="OtherCharge" />
+                <ScalarProperty Name="LastMonthBalance" ColumnName="LastMonthBalance" />
+                <ScalarProperty Name="LastMonthAdvance" ColumnName="LastMonthAdvance" />
+                <ScalarProperty Name="ReceivedDate" ColumnName="ReceivedDate" />
+                <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="IsPaymentClear" ColumnName="IsPaymentClear" />
+                <ScalarProperty Name="IsCanceled" ColumnName="IsCanceled" />
+                <ScalarProperty Name="IsCarryForward" ColumnName="IsCarryForward" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="RentoPropManagementModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TenantInfoes">
+            <EntityTypeMapping TypeName="RentoPropManagementModel.TenantInfo">
+              <MappingFragment StoreEntitySet="TenantInfo">
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MobileNo1" ColumnName="MobileNo1" />
+                <ScalarProperty Name="MobileNo2" ColumnName="MobileNo2" />
+                <ScalarProperty Name="TempAddress" ColumnName="TempAddress" />
+                <ScalarProperty Name="PermAddress" ColumnName="PermAddress" />
+                <ScalarProperty Name="HomeTelNo1" ColumnName="HomeTelNo1" />
+                <ScalarProperty Name="HomeTelNo2" ColumnName="HomeTelNo2" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DeactivationDate" ColumnName="DeactivationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="RentoPropManagementModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="RentoPropManagementModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="RentoPropManagementModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="RentoPropManagementModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RentoPropManagementModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="RentoPropManagementModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RentoPropManagementModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="RentoPropManagementModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="RentoPropManagementModel.Store.sp_upgraddiagrams" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

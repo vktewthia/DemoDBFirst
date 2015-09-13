@@ -25,7 +25,6 @@ namespace DatabaseFirst
         public int PropertyNo { get; set; }
         public string PropertyCaption { get; set; }
         public string PropertyId { get; set; }
-        public string AreaCode { get; set; }
     
         public virtual ICollection<PropertyMeterMapping> PropertyMeterMappings { get; set; }
         public virtual ICollection<RentalProperty> RentalProperties { get; set; }

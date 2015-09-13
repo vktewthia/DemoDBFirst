@@ -399,7 +399,6 @@
           <Property Name="PropertyId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="PropertyMeterMappings" Relationship="Self.FK_dbo_PropertyMeterMapping_dbo_Property_MainPropertyKey" FromRole="Property" ToRole="PropertyMeterMapping" />
           <NavigationProperty Name="RentalProperties" Relationship="Self.FK_dbo_RentalProperty_dbo_Property_ParentPropertyKey" FromRole="Property" ToRole="RentalProperty" />
-          <Property Name="Location" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="PropertyMeterMapping">
           <Key>

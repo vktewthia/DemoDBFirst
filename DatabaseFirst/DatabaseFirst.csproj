@@ -51,12 +51,74 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contract.cs">
+      <DependentUpon>RentoDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="C__MigrationHistory.cs">
+      <DependentUpon>RentoDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ElectricityMeterMaster.cs">
+      <DependentUpon>RentoDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ElectricityUnitReading.cs">
+      <DependentUpon>RentoDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Property.cs">
+      <DependentUpon>RentoDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyMeterMapping.cs">
+      <DependentUpon>RentoDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RentalProperty.cs">
+      <DependentUpon>RentoDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RentoDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RentoDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RentoDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RentoDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RentoDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RentoDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="RentReceipt.cs">
+      <DependentUpon>RentoDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>RentoDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TenantInfo.cs">
+      <DependentUpon>RentoDB.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <EntityDeploy Include="RentoDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>RentoDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="RentoDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>RentoDB.edmx</DependentUpon>
+      <LastGenOutput>RentoDB.Context.cs</LastGenOutput>
+    </None>
+    <None Include="RentoDB.edmx.diagram">
+      <DependentUpon>RentoDB.edmx</DependentUpon>
+    </None>
+    <None Include="RentoDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>RentoDB.edmx</DependentUpon>
+      <LastGenOutput>RentoDB.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
